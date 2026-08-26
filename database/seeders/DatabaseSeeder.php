@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RoleSeeder::class);
+        $this->call(DemoDataSeeder::class);
 
         $admin = User::firstOrCreate(
             ['email' => 'admin@parfums-marketplace.test'],
