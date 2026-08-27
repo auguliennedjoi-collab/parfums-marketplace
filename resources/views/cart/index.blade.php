@@ -80,9 +80,9 @@
                     <p class="text-lg font-semibold text-gray-800">
                         Total : {{ number_format($total, 0, ',', ' ') }} FCFA
                     </p>
-                    <button class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                        Passer la commande
-                    </button>
+                   <a href="{{ route('orders.checkout') }}" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+    Passer la commande
+</a>
                 </div>
             @endif
 
