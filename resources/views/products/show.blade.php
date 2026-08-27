@@ -36,7 +36,7 @@
                     </p>
 
                     @auth
-                        <form method="POST" action="#" class="flex gap-2">
+                        <form method="POST" action="{{ route('cart.store', $product) }}" class="flex gap-2">
                             @csrf
                             <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}" class="w-20 rounded-md border-gray-300">
                             <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">

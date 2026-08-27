@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,6 +32,13 @@ Route::middleware(['auth', 'role:vendeur'])->prefix('vendeur')->name('vendor.')-
         'update' => 'products.update',
         'destroy' => 'products.destroy',
     ]);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/panier', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/panier/ajouter/{product}', [CartController::class, 'store'])->name('cart.store');
+    Route::patch('/panier/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/panier/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 
 require __DIR__.'/auth.php';
