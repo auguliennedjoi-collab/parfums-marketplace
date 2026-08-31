@@ -97,4 +97,34 @@ class OrderController extends Controller
             'orders' => $orders,
         ]);
     }
+
+        public function confirmPayment(Request $request, Order $order): \Illuminate\Http\JsonResponse
+    {
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'transactionId' => ['required', 'string'],
+        ]);
+
+        $response = \Illuminate\Support\Facades\Http::withHeaders([
+            'x-api-key' => config('services.kkiapay.private_key'),
+        ])->post('https://api.kkiapay.me/api/v1/transactions/status', [
+            'transactionId' => $validated['transactionId'],
+        ]);
+
+        $data = $response->json();
+
+        if (($data['status'] ?? null) === 'SUCCESS') {
+            $order->update([
+                'status' => 'paid',
+                'payment_reference' => $validated['transactionId'],
+            ]);
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 422);
+    }
 }

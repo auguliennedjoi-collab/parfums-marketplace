@@ -46,5 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/commande', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/commandes', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/commandes/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::post('/commandes/{order}/confirmer-paiement', [OrderController::class, 'confirmPayment'])->name('orders.confirm-payment');
 
 require __DIR__.'/auth.php';
