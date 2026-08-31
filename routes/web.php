@@ -6,6 +6,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\VendorController as AdminVendorController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,12 +43,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/panier/ajouter/{product}', [CartController::class, 'store'])->name('cart.store');
     Route::patch('/panier/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/panier/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
-});
 
     Route::get('/commande', [OrderController::class, 'checkout'])->name('orders.checkout');
     Route::post('/commande', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/commandes', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/commandes/{order}', [OrderController::class, 'show'])->name('orders.show');
-        Route::post('/commandes/{order}/confirmer-paiement', [OrderController::class, 'confirmPayment'])->name('orders.confirm-payment');
+    Route::post('/commandes/{order}/confirmer-paiement', [OrderController::class, 'confirmPayment'])->name('orders.confirm-payment');
+});
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/vendeurs', [AdminVendorController::class, 'index'])->name('vendors.index');
+    Route::patch('/vendeurs/{vendor}/approuver', [AdminVendorController::class, 'approve'])->name('vendors.approve');
+    Route::patch('/vendeurs/{vendor}/rejeter', [AdminVendorController::class, 'reject'])->name('vendors.reject');
+
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
+
+    Route::get('/commandes', [AdminOrderController::class, 'index'])->name('orders.index');
+});
 
 require __DIR__.'/auth.php';

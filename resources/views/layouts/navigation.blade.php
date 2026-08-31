@@ -21,6 +21,17 @@
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                         {{ __('Panier') }}
                     </x-nav-link>
+                    @role('admin')
+                        <x-nav-link :href="route('admin.vendors.index')" :active="request()->routeIs('admin.vendors.*')">
+                            {{ __('Vendeurs') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
+                            {{ __('Catégories') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.orders.index')" :active="request()->routeIs('admin.orders.*')">
+                            {{ __('Toutes les commandes') }}
+                        </x-nav-link>
+                    @endrole
                 </div>
             </div>
 
@@ -82,6 +93,17 @@
             <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                 {{ __('Panier') }}
             </x-responsive-nav-link>
+            @role('admin')
+                <x-responsive-nav-link :href="route('admin.vendors.index')" :active="request()->routeIs('admin.vendors.*')">
+                    {{ __('Vendeurs') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
+                    {{ __('Catégories') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.orders.index')" :active="request()->routeIs('admin.orders.*')">
+                    {{ __('Toutes les commandes') }}
+                </x-responsive-nav-link>
+            @endrole
         </div>
 
         <!-- Responsive Settings Options -->
