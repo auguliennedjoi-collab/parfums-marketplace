@@ -8,6 +8,12 @@
     <div class="py-8">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 
+            @if (session('success'))
+                <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-md">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -27,10 +33,17 @@
                                 <td class="px-6 py-4 text-sm text-gray-800">{{ $order->created_at->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-800">{{ number_format($order->total_amount, 0, ',', ' ') }} FCFA</td>
                                 <td class="px-6 py-4 text-sm">
-                                    <span class="px-2 py-1 text-xs rounded-full
-                                        {{ $order->status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                                        {{ ucfirst($order->status) }}
-                                    </span>
+                                    <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="flex items-center gap-2">
+                                        @csrf
+                                        @method('PATCH')
+                                        <select name="status" onchange="this.form.submit()" class="text-xs rounded-md border-gray-300">
+                                            <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="paid" {{ $order->status === 'paid' ? 'selected' : '' }}>Paid</option>
+                                            <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                            <option value="delivered" {{ $order->status === 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                            <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                        </select>
+                                    </form>
                                 </td>
                             </tr>
                         @empty

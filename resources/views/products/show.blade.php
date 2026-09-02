@@ -54,6 +54,41 @@
             {{-- Avis --}}
             <div class="bg-white rounded-lg shadow p-6 mt-6">
                 <h3 class="font-semibold text-lg text-gray-800 mb-4">Avis clients</h3>
+
+                @if (session('success'))
+                    <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-md text-sm">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @auth
+                    <form method="POST" action="{{ route('reviews.store', $product) }}" class="mb-6 pb-6 border-b">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Votre note</label>
+                            <select name="rating" class="rounded-md border-gray-300 shadow-sm text-sm">
+                                <option value="5">★★★★★ (5)</option>
+                                <option value="4">★★★★☆ (4)</option>
+                                <option value="3">★★★☆☆ (3)</option>
+                                <option value="2">★★☆☆☆ (2)</option>
+                                <option value="1">★☆☆☆☆ (1)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Votre commentaire (optionnel)</label>
+                            <textarea name="comment" rows="3" class="w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="Qu'avez-vous pensé de ce produit ?"></textarea>
+                        </div>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700">
+                            Publier mon avis
+                        </button>
+                    </form>
+                @endauth
+
                 @forelse ($product->reviews as $review)
                     <div class="border-b py-3">
                         <p class="text-sm font-semibold text-gray-800">{{ $review->user->name }} — ★ {{ $review->rating }}/5</p>

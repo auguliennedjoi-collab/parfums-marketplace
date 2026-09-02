@@ -22,6 +22,9 @@
                         {{ __('Panier') }}
                     </x-nav-link>
                     @role('admin')
+                        <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
+                            {{ __('Produits') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.vendors.index')" :active="request()->routeIs('admin.vendors.*')">
                             {{ __('Vendeurs') }}
                         </x-nav-link>
@@ -94,6 +97,9 @@
                 {{ __('Panier') }}
             </x-responsive-nav-link>
             @role('admin')
+                <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
+                    {{ __('Produits') }}
+                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.vendors.index')" :active="request()->routeIs('admin.vendors.*')">
                     {{ __('Vendeurs') }}
                 </x-responsive-nav-link>

@@ -9,6 +9,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\VendorController as AdminVendorController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -55,12 +57,19 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/vendeurs', [AdminVendorController::class, 'index'])->name('vendors.index');
     Route::patch('/vendeurs/{vendor}/approuver', [AdminVendorController::class, 'approve'])->name('vendors.approve');
     Route::patch('/vendeurs/{vendor}/rejeter', [AdminVendorController::class, 'reject'])->name('vendors.reject');
+        Route::patch('/commandes/{order}/statut', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
 
     Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
     Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
     Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
 
     Route::get('/commandes', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/produits', [AdminProductController::class, 'index'])->name('products.index');
+    Route::get('/produits/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
+    Route::put('/produits/{product}', [AdminProductController::class, 'update'])->name('products.update');
+    Route::delete('/produits/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
 });
+
+    Route::post('/produits/{product}/avis', [ReviewController::class, 'store'])->name('reviews.store');
 
 require __DIR__.'/auth.php';
