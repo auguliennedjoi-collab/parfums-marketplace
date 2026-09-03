@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderStatusUpdatedMail;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class OrderController extends Controller
@@ -26,6 +28,8 @@ class OrderController extends Controller
         ]);
 
         $order->update(['status' => $validated['status']]);
+
+        Mail::to($order->user->email)->send(new OrderStatusUpdatedMail($order));
 
         return back()->with('success', 'Statut de la commande mis à jour.');
     }

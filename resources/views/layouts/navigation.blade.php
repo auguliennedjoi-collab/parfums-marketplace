@@ -21,6 +21,11 @@
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                         {{ __('Panier') }}
                     </x-nav-link>
+                    @role('vendeur')
+                        <x-nav-link :href="route('vendor.products.index')" :active="request()->routeIs('vendor.products.*')">
+                            {{ __('Mes produits') }}
+                        </x-nav-link>
+                    @endrole
                     @role('admin')
                         <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
                             {{ __('Produits') }}
@@ -96,6 +101,11 @@
             <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                 {{ __('Panier') }}
             </x-responsive-nav-link>
+            @role('vendeur')
+                <x-responsive-nav-link :href="route('vendor.products.index')" :active="request()->routeIs('vendor.products.*')">
+                    {{ __('Mes produits') }}
+                </x-responsive-nav-link>
+            @endrole
             @role('admin')
                 <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
                     {{ __('Produits') }}

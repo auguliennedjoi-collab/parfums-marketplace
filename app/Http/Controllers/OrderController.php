@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use App\Mail\OrderConfirmationMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -73,6 +75,8 @@ class OrderController extends Controller
             return $order;
         });
 
+        Mail::to($order->user->email)->send(new OrderConfirmationMail($order));
+
         return redirect()->route('orders.show', $order)->with('success', 'Commande passée avec succès.');
     }
 
@@ -98,7 +102,7 @@ class OrderController extends Controller
         ]);
     }
 
-        public function confirmPayment(Request $request, Order $order): \Illuminate\Http\JsonResponse
+    public function confirmPayment(Request $request, Order $order): \Illuminate\Http\JsonResponse
     {
         if ($order->user_id !== auth()->id()) {
             abort(403);
