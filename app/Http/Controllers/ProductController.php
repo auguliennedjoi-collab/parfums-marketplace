@@ -9,6 +9,22 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+    public function home(): View
+    {
+        $categories = Category::whereNull('parent_id')->with('children')->get();
+
+        $featuredProducts = Product::where('status', 'active')
+            ->with(['vendor', 'category', 'reviews'])
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('home', [
+            'categories' => $categories,
+            'featuredProducts' => $featuredProducts,
+        ]);
+    }
+
     public function index(Request $request): View
     {
         $categories = Category::whereNull('parent_id')->with('children')->get();

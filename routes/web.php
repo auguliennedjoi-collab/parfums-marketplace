@@ -12,9 +12,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ProductController::class, 'home'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -71,5 +69,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
     Route::post('/produits/{product}/avis', [ReviewController::class, 'store'])->name('reviews.store');
+
 
 require __DIR__.'/auth.php';
